@@ -1,17 +1,20 @@
+library("BacArena")
+library("sybil")
+library ("readxl")
+library("here")
 source('Functions/Geometry.R')
 source('Functions/Inoculation.R')
 source('Functions/Menu.R')
 source('Functions/MetabolitesAbsorbed.R')
 source('Functions/Bioreactor.R')
-#source('Functions/GutsFunctions.R')
 
-Guts <- function(home){
-  ModelsFolder <- paste(home,'/',"MicroModel",sep='')
+Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel'){
+  ModelsFolder <- paste(home,'/',Models_folder,sep='')
   #Add a function to verify that what we have in the folder is the same as in the excel table
-  ParametersLocation <- paste(home,'/Parameters/','ControlPanel.xlsx',sep='')
+  ParametersLocation <- paste(home,'/',Parameters_folder,'/','ControlPanel.xlsx',sep='')
   Parameters <- read_excel(ParametersLocation)
-  ModelCommunityLocation <- paste(home,'/Parameters/',Parameters[1,2],sep='')
-  MenuLocation <- paste(home,'/Parameters/',Parameters[2,2],sep='')
+  ModelCommunityLocation <- paste(home,'/',Parameters_folder,'/',Parameters[1,2],sep='')
+  MenuLocation <- paste(home,'/',Parameters_folder,'/',Parameters[2,2],sep='')
   Flow_rate <- as.numeric(Parameters[3,2])*1000/24 #cm3/h
   #Reactors <- c('Duodenum','Jejunum','Ileum','Large intestine')
   for (reactor_id in 1:4) {
