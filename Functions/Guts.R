@@ -2,15 +2,15 @@ library("BacArena")
 library("sybil")
 library ("readxl")
 library("here")
+library("writexl")
 source('Functions/Geometry.R')
 source('Functions/Inoculation.R')
 source('Functions/Menu.R')
 source('Functions/MetabolitesAbsorbed.R')
 source('Functions/Bioreactor.R')
+source('Functions/SaveProfiles.R')
 
-Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel'){
-  #start_time <- Sys.time()
-  #end_time <- Sys.time()
+Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',SaveResults=TRUE){
   ModelsFolder <- paste(home,'/',Models_folder,sep='')
   #Add a function to verify that what we have in the folder is the same as in the excel table
   ParametersLocation <- paste(home,'/',Parameters_folder,'/','ControlPanel.xlsx',sep='')
@@ -49,6 +49,9 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel')
     IDsabsorp <- Absorption[[reactor_id]] 
     #consider only the ones that can be consumed by the microbial community I need to add another function for it
     eval <- Bioreactor(steps,eval,IDsabsorp,GridSize)
+  }
+  if(SaveResults){
+    SaveProfiles(eval)
   }
   return(eval)
 }

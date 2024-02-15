@@ -1,0 +1,16 @@
+source('Functions/RetrieveBiomass.R')
+source('Functions/RetrieveComposition.R')
+SaveProfiles <- function(eval){
+  time0 <- Sys.time()
+  CurrentTime <- gsub(' ','_',toString(hora0))
+  ResultsFolder <- paste(home,'/Results',sep='')
+  dir.create(ResultsFolder)
+  CurrentResult <- paste(ResultsFolder,'/',CurrentTime,sep='')
+  dir.create(CurrentResult)
+  Biomass_DF <- RetrieveBiomass(eval)
+  BiomassProfileLocation <- paste(CurrentResult,'/Biomass.xlsx',sep='')
+  write_xlsx(Biomass_DF,BiomassProfileLocation)
+  Concentrations_DF <- RetrieveComposition(eval)
+  ConcentrationProfileLocation <- paste(CurrentResult,'/Metabolites.xlsx',sep='')
+  write_xlsx(Concentrations_DF,ConcentrationProfileLocation)  
+}
