@@ -4,7 +4,9 @@ Menu <- function(MenuLocation,arena){
   for (substance in 1:NIngredients){
     id <- as.character(c(paste('EX_',menuTable[substance,'id'],sep='')))
     smax <- as.numeric(c((menuTable[substance,'Concentration (mM)'])))
+    if (smax >0){
     arena <- addSubs(object=arena, smax=smax, mediac=id,addAnyway=TRUE,add=FALSE,unit='mM',difunc='pde')
+    }
   }
   return(arena)
 }

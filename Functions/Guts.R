@@ -9,6 +9,8 @@ source('Functions/MetabolitesAbsorbed.R')
 source('Functions/Bioreactor.R')
 
 Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel'){
+  #start_time <- Sys.time()
+  #end_time <- Sys.time()
   ModelsFolder <- paste(home,'/',Models_folder,sep='')
   #Add a function to verify that what we have in the folder is the same as in the excel table
   ParametersLocation <- paste(home,'/',Parameters_folder,'/','ControlPanel.xlsx',sep='')
@@ -37,9 +39,16 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel')
       eval <- BacArena::simEnv(arena, sec_obj='mtf',time=1)
       steps <-steps-1
     }
+    #return(eval)
+    eval@tstep <- dt
+    eval@n <- GridSize
+    eval@m <- GridSize
+    eval@Lx <- Width
+    eval@Ly <- Width
     Absorption <- MetabolitesAbsorbed(MenuLocation)
-    IDsabsorp <- Absorption[[reactor_id]]
-    eval <- Bioreactor(steps,eval,IDsabsorb,GridSize)
+    IDsabsorp <- Absorption[[reactor_id]] 
+    #consider only the ones that can be consumed by the microbial community I need to add another function for it
+    eval <- Bioreactor(steps,eval,IDsabsorp,GridSize)
   }
   return(eval)
 }
