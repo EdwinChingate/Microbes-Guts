@@ -15,5 +15,6 @@ RetrieveBiomass <-function(eval){
   }
   Biomass_DF <- data.frame(Biomass_matrix)
   names(Biomass_DF) <- SpecNames
+  Biomass_DF$TimeSteps <- 1:Tsteps
   return(Biomass_DF)
 }

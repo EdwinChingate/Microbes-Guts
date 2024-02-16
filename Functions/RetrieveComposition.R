@@ -10,5 +10,6 @@ RetrieveComposition <- function(eval){
   }
   Concentrations_DF <- data.frame(ConcentrationProfiles)
   names(Concentrations_DF) <- IDsVec
+  Concentrations_DF$TimeSteps <- 1:length(ConcentrationProfile)
   return(Concentrations_DF)
 }

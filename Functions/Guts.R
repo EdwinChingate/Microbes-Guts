@@ -18,7 +18,13 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   ModelCommunityLocation <- paste(home,'/',Parameters_folder,'/',Parameters[1,2],sep='')
   MenuLocation <- paste(home,'/',Parameters_folder,'/',Parameters[2,2],sep='')
   Flow_rate <- as.numeric(Parameters[3,2])*1000/24 #cm3/h
-  #Reactors <- c('Duodenum','Jejunum','Ileum','Large intestine')
+  Reactors <- c('Duodenum','Jejunum','Ileum','Large intestine')
+  ReactorSpaceLocation <- 'Stomach'
+  StepsLocation <- 1
+  HRTprogress <- 0
+  Zposprogress <- 0
+  ZPosition <- 0
+  HRT <- 0
   for (reactor_id in 1:4) {
     print(reactor_id)
     ParametersGeometry <- Geometry(reactor_id,Parameters)
@@ -30,8 +36,14 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     Speed <- Flow_rate/Flow_area #cm/h
     Hydraulic_retention_time <- Length/Speed #h
     dt <- Hydraulic_retention_time/steps
-    #Update parameters in the arena
-    
+    for (s in 1:steps){
+      ReactorSpaceLocation <- c(ReactorSpaceLocation,Reactors[reactor_id])
+      StepsLocation <- c(StepsLocation,length(ReactorSpaceLocation))
+      HRTprogress <- HRTprogress + dt*s
+      Zposprogress <- Zposprogress + dt*s*Speed
+      HRT <- c(HRT,HRTprogress)
+      ZPosition <- c(ZPosition,Zposprogress)
+    }
     if (reactor_id==1){
       arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
       arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
@@ -50,8 +62,9 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     #consider only the ones that can be consumed by the microbial community I need to add another function for it
     eval <- Bioreactor(steps,eval,IDsabsorp,GridSize)
   }
+  SpaceLocationInf <- data.frame('TimeSteps'=StepsLocation ,'Guts section'=ReactorSpaceLocation,'Longitudinal progress (cm)'= ZPosition, 'HRT (h)' = HRT)
   if(SaveResults){
-    SaveProfiles(eval)
+    SaveProfiles(eval,SpaceLocationInf)
   }
   return(eval)
 }
