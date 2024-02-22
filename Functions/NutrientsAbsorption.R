@@ -3,6 +3,7 @@ NutrientsAbsorption <- function(eval,IDsabsorp,GridSize){
   #this way is sensible to the number of steps, upgrade with an absorption rate where all nutrients are absorbed in the reactor  
   last_step <- length(eval@medlist)
   #also evaluate the kind of object it is... avoid  logi(0) 
+  # mode(eval@medlist[[2]][["EX_26dap_M(e)"]])=="logical"
   for (id in IDsabsorp){
     Ex_id <- paste('EX_',id,sep='')
     eval@medlist[[last_step]][[Ex_id]][ 1:(GridSize-1)] <- 0 

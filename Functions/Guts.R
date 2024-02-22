@@ -39,8 +39,8 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     for (s in 1:steps){
       ReactorSpaceLocation <- c(ReactorSpaceLocation,Reactors[reactor_id])
       StepsLocation <- c(StepsLocation,length(ReactorSpaceLocation))
-      HRTprogress <- HRTprogress + dt*s
-      Zposprogress <- Zposprogress + dt*s*Speed
+      HRTprogress <- HRTprogress + dt
+      Zposprogress <- Zposprogress + dt*Speed
       HRT <- c(HRT,HRTprogress)
       ZPosition <- c(ZPosition,Zposprogress)
     }
@@ -48,10 +48,10 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
       arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
       arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
       arena <- Menu(MenuLocation,arena)
-      eval <- BacArena::simEnv(arena, sec_obj='mtf',time=1)
+      eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
       steps <-steps-1
     }
-    #return(eval)
+    return(eval)
     eval@tstep <- dt
     eval@n <- GridSize
     eval@m <- GridSize
