@@ -1,7 +1,7 @@
 source('Functions/NutrientsAbsorption.R')
-Bioreactor <- function(steps,eval,IDsabsorp,GridSize){
+Bioreactor <- function(steps,eval,IDsabsorp,GridSize,Hydraulic_retention_time,dt,AbsorptionEfficiency=0.9){
   for (t in 1:steps){
-    eval <- NutrientsAbsorption(eval,IDsabsorp,GridSize)
+    eval <- NutrientsAbsorption(eval,IDsabsorp,GridSize,Hydraulic_retention_time,dt,AbsorptionEfficiency)
     eval <- BacArena::simEnv(eval,time=1) #, sec_obj='mtf'
   }  
   return(eval)

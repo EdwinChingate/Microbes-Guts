@@ -51,7 +51,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
       eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
       steps <-steps-1
     }
-    return(eval)
+    #return(eval)
     eval@tstep <- dt
     eval@n <- GridSize
     eval@m <- GridSize
@@ -60,7 +60,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     Absorption <- MetabolitesAbsorbed(MenuLocation)
     IDsabsorp <- Absorption[[reactor_id]] 
     #consider only the ones that can be consumed by the microbial community I need to add another function for it
-    eval <- Bioreactor(steps,eval,IDsabsorp,GridSize)
+    eval <- Bioreactor(steps,eval,IDsabsorp,GridSize,Hydraulic_retention_time,dt)
   }
   SpaceLocationInf <- data.frame('TimeSteps'=StepsLocation ,'Guts section'=ReactorSpaceLocation,'Longitudinal progress (cm)'= ZPosition, 'HRT (h)' = HRT)
   if(SaveResults){
