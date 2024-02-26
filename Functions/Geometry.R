@@ -6,6 +6,6 @@ Geometry <- function(reactor_id,Parameters){
   #steps <- round(as.numeric(Parameters[4*reactor_id + 2,2])) #Update with the TotalLenght and the total steps
   Length <- as.numeric(Parameters[3*reactor_id + 4,2])
   LenghtFraction <- Length/TotalLength
-  steps <- LenghtFraction*AllSteps
+  steps <- as.integer(LenghtFraction*AllSteps+1)
   return( as.numeric(c(GridSize,Width,steps,Length)))
 }
