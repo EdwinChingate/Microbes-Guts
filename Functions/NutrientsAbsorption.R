@@ -6,10 +6,7 @@ NutrientsAbsorption <- function(eval,IDsabsorp,GridSize,Hydraulic_retention_time
   # mode(eval@medlist[[2]][["EX_26dap_M(e)"]])=="logical"
   for (id in IDsabsorp){
     Ex_id <- paste('EX_',id,sep='')
-    eval@medlist[[last_step]][[Ex_id]][ 1:(GridSize-1)] <-  (eval@medlist[[last_step]][[Ex_id]][ 1:(GridSize-1)])*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time)
-    eval@medlist[[last_step]][[Ex_id]][GridSize*(1:(GridSize-1))+1] <- eval@medlist[[last_step]][[Ex_id]][GridSize*(1:(GridSize-1))+1]*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time)
-    eval@medlist[[last_step]][[Ex_id]][GridSize*(1:GridSize)] <- eval@medlist[[last_step]][[Ex_id]][GridSize*(1:GridSize)]*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time)
-    eval@medlist[[last_step]][[Ex_id]][2:(GridSize-1)+(GridSize*(GridSize-1))] <- eval@medlist[[last_step]][[Ex_id]][2:(GridSize-1)+(GridSize*(GridSize-1))]*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time)
+    eval@medlist[[last_step]][[Ex_id]] <- (eval@medlist[[last_step]][[Ex_id]])*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time)
   }
   return(eval)
 }
