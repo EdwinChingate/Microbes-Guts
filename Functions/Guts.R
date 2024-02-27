@@ -55,7 +55,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     if (reactor_id==1){
       arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
       arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
-      arena <- Menu(MenuLocation,arena)
+      arena <- Menu(MenuLocation,arena,CellVolume)
       eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
       steps <-steps-1
     }
@@ -76,7 +76,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   }
   SpaceLocationInf <- data.frame('TimeSteps'=StepsLocation ,'Guts section'=ReactorSpaceLocation,'Longitudinal progress (cm)'= ZPosition, 'HRT (h)' = HRT)
   if(SaveResults){
-    SaveProfiles(eval,SpaceLocationInf)
+    SaveProfiles(eval,SpaceLocationInf,CellVolume,GridSize,MicrobeMass)
   }
   return(eval)
 }
