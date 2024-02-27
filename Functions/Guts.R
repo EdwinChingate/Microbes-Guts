@@ -18,6 +18,8 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   ModelCommunityLocation <- paste(home,'/',Parameters_folder,'/',Parameters[1,2],sep='')
   MenuLocation <- paste(home,'/',Parameters_folder,'/',Parameters[2,2],sep='')
   Flow_rate <- as.numeric(Parameters[3,2])*1000/24 #cm3/h
+  MicrobeVolume <- as.numeric(Parameters[17,2]) #um3
+  MicrobeMass <- as.numeric(Parameters[18,2])
   Reactors <- c('Duodenum','Jejunum','Ileum','Large intestine')
   ReactorSpaceLocation <- 'Stomach'
   StepsLocation <- 1
@@ -36,6 +38,12 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     Speed <- Flow_rate/Flow_area #cm/h
     Hydraulic_retention_time <- Length/Speed #h
     dt <- Hydraulic_retention_time/steps
+    CellLengt <- dt*Speed
+    width <- Width/GridSize
+    CellArea <- width**2
+    CellVolume <- CellArea*CellLengt*1e12 #um3
+    MaxMicrobesNumber <- CellVolume/MicrobeVolume
+    MaxBiomass <- MaxMicrobesNumber*MicrobeMass
     for (s in 1:steps){
       ReactorSpaceLocation <- c(ReactorSpaceLocation,Reactors[reactor_id])
       StepsLocation <- c(StepsLocation,length(ReactorSpaceLocation))
@@ -57,6 +65,10 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     eval@m <- GridSize
     eval@Lx <- Width
     eval@Ly <- Width
+    SpecsNumbers <- length(eval@specs)
+    for (s in 1:SpecsNumbers){
+      eval@specs[[s]]@maxweight <- MaxBiomass
+    }
     Absorption <- MetabolitesAbsorbed(MenuLocation)
     IDsabsorp <- Absorption[[reactor_id]] 
     #consider only the ones that can be consumed by the microbial community I need to add another function for it
