@@ -6,7 +6,9 @@ NutrientsAbsorption <- function(eval,IDsabsorp,GridSize,Hydraulic_retention_time
   # mode(eval@medlist[[2]][["EX_26dap_M(e)"]])=="logical"
   for (id in IDsabsorp){
     Ex_id <- paste('EX_',id,sep='')
-    eval@medlist[[last_step]][[Ex_id]] <- (eval@medlist[[last_step]][[Ex_id]])*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time)
+    eval@medlist[[last_step]][[Ex_id]] <- (eval@medlist[[last_step]][[Ex_id]])*(1-AbsorptionEfficiency)^(dt/Hydraulic_retention_time) #I can replace it
   }
   return(eval)
 }
+
+# this is how I can extract the concentration profiles inside the arena, as a a matrix, and modifity them arena2@media[["EX_ala_L(e)"]]@diffmat

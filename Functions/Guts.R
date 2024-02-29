@@ -60,14 +60,14 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
       steps <-steps-1
     }
     #return(eval)
-    eval@tstep <- dt
-    eval@n <- GridSize
-    eval@m <- GridSize
-    eval@Lx <- Width
-    eval@Ly <- Width
+    eval@tstep <- dt #I can replace it
+    eval@n <- GridSize #I can replace it
+    eval@m <- GridSize #I can replace it
+    eval@Lx <- Width #I can replace it
+    eval@Ly <- Width #I can replace it
     SpecsNumbers <- length(eval@specs)
     for (s in 1:SpecsNumbers){
-      eval@specs[[s]]@maxweight <- MaxBiomass
+      eval@specs[[s]]@maxweight <- MaxBiomass #I can replace it
     }
     Absorption <- MetabolitesAbsorbed(MenuLocation)
     IDsabsorp <- Absorption[[reactor_id]] 
