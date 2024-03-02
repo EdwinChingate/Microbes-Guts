@@ -31,7 +31,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     print(reactor_id)
     ParametersGeometry <- Geometry(reactor_id,Parameters)
     Width <- ParametersGeometry[2]
-    GridSize <- ParametersGeometry[1]
+    GridSize <- ParametersGeometry[1] #Update! not anymore
     steps <- ParametersGeometry[3]
     Length <- ParametersGeometry[4] #cm
     Flow_area <- Width^2 #cm2
@@ -56,8 +56,8 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
       arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
       arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
       arena <- Menu(MenuLocation,arena,CellVolume)
-      eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
-      steps <-steps-1
+     # eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
+     # steps <-steps-1
     }
     #return(eval)
     eval@tstep <- dt #I can replace it
