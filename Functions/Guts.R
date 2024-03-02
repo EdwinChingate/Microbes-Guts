@@ -17,9 +17,9 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   Parameters <- read_excel(ParametersLocation)
   ModelCommunityLocation <- paste(home,'/',Parameters_folder,'/',Parameters[1,2],sep='')
   MenuLocation <- paste(home,'/',Parameters_folder,'/',Parameters[2,2],sep='')
-  Flow_rate <- as.numeric(Parameters[3,2])*1000/24 #cm3/h
-  MicrobeVolume <- as.numeric(Parameters[17,2]) #um3
-  MicrobeMass <- as.numeric(Parameters[18,2])
+  
+
+  GridSize <- as.numeric(Parameters[5,2]) #Update! not anymore
   Reactors <- c('Duodenum','Jejunum','Ileum','Large intestine')
   ReactorSpaceLocation <- 'Stomach'
   StepsLocation <- 1
@@ -27,23 +27,12 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   Zposprogress <- 0
   ZPosition <- 0
   HRT <- 0
+  arena <- BacArena::Arena(n=GridSize,m=GridSize)
+  arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena)
   for (reactor_id in 1:4) {
     print(reactor_id)
     ParametersGeometry <- Geometry(reactor_id,Parameters)
-    Width <- ParametersGeometry[2]
-    GridSize <- ParametersGeometry[1] #Update! not anymore
-    steps <- ParametersGeometry[3]
-    Length <- ParametersGeometry[4] #cm
-    Flow_area <- Width^2 #cm2
-    Speed <- Flow_rate/Flow_area #cm/h
-    Hydraulic_retention_time <- Length/Speed #h
-    dt <- Hydraulic_retention_time/steps
-    CellLengt <- dt*Speed
-    width <- Width/GridSize
-    CellArea <- width**2
-    CellVolume <- CellArea*CellLengt*1e12 #um3
-    MaxMicrobesNumber <- CellVolume/MicrobeVolume
-    MaxBiomass <- MaxMicrobesNumber*MicrobeMass
+
     for (s in 1:steps){
       ReactorSpaceLocation <- c(ReactorSpaceLocation,Reactors[reactor_id])
       StepsLocation <- c(StepsLocation,length(ReactorSpaceLocation))
@@ -53,8 +42,8 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
       ZPosition <- c(ZPosition,Zposprogress)
     }
     if (reactor_id==1){
-      arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
-      arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
+       #Define the 2D space geometry
+       #Add the microorganisms to the arena
       arena <- Menu(MenuLocation,arena,CellVolume)
      # eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
      # steps <-steps-1
