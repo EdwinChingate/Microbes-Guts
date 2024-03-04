@@ -1,4 +1,10 @@
-UpdateMenu <- function(arena,CellVolume){}
-
-#Update metabolites concentrations based on the changes on cell volume
-#arena@media[["EX_arg_L(e)"]]@diffmat Multiply the concentrations matrix by the dilution factor, after changing the volume of the cells
+UpdateMenu <- function(arena,GeometricMatrix,reactor_id){
+  Past_cellVolume <- GeometricMatrix[1,reactor_id-1]
+  Current_cellVolume <-GeometricMatrix[1,reactor_id] 
+  dilution_ratio <- Past_cellVolume/Current_cellVolume
+  for (metabolite in arena@media){
+    metabolite_id <- metabolite@id
+    arena@media[[metabolite_id]]@diffmat <- arena@media[[metabolite_id]]@diffmat*dilution_ratio
+  }
+  return(arena)
+}

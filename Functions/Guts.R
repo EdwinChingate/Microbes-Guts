@@ -43,11 +43,10 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   #    ZPosition <- c(ZPosition,Zposprogress)
   #  }
     arena <-AdaptArena(reactor_id,GeometricMatrix,MenuLocation,arena)
- 
     Absorption <- MetabolitesAbsorbed(MenuLocation)
     IDsabsorp <- Absorption[[reactor_id]] 
     #consider only the ones that can be consumed by the microbial community I need to add another function for it
-    eval <- Bioreactor(steps,eval,IDsabsorp,GridSize,Hydraulic_retention_time,dt)
+    arena <- Bioreactor(steps,arena,IDsabsorp,GridSize,Hydraulic_retention_time,dt)
   }
   SpaceLocationInf <- data.frame('TimeSteps'=StepsLocation ,'Guts section'=ReactorSpaceLocation,'Longitudinal progress (cm)'= ZPosition, 'HRT (h)' = HRT)
   if(SaveResults){

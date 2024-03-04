@@ -6,6 +6,7 @@ AdaptArena <- function(reactor_id,GeometricMatrix,MenuLocation,arena){
   MaxBiomass <- GeometricMatrix[3,reactor_id] 
   steps <- GeometricMatrix[4,reactor_id] 
   dt <- GeometricMatrix[5,reactor_id] 
+  Width <- GeometricMatrix[6,reactor_id] 
   arena@tstep <- dt 
   arena@Lx <- Width 
   arena@Ly <- Width 
@@ -16,7 +17,7 @@ AdaptArena <- function(reactor_id,GeometricMatrix,MenuLocation,arena){
   }
   SpecsNumbers <- length(arena@specs)
   for (s in 1:SpecsNumbers){
-    arena@specs[[s]]@maxweight <- MaxBiomass #I can replace it
+    arena@specs[[s]]@maxweight <- MaxBiomass 
   }
 }
-#Update the dimensions of the arena
+

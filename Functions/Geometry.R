@@ -1,5 +1,5 @@
 Geometry <- function(Parameters){
-  GeometricMatrix <- matrix(0,nrow=5,ncol=4)
+  GeometricMatrix <- matrix(0,nrow=6,ncol=4)
   Flow_rate <- as.numeric(Parameters[3,2])*1000/24 #cm3/h  
   AllSteps <- as.numeric(Parameters[4,2])
   GridSize <- as.numeric(Parameters[5,2])
@@ -26,6 +26,7 @@ Geometry <- function(Parameters){
     GeometricMatrix[3,reactor_id] <- MaxBiomass
     GeometricMatrix[4,reactor_id] <- steps
     GeometricMatrix[5,reactor_id] <- dt
+    GeometricMatrix[6,reactor_id] <- Width
   }
   return(GeometricMatrix)
 }
