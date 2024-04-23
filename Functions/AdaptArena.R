@@ -2,9 +2,7 @@ source('Functions/Menu.R')
 source('Functions/UpdateMenu.R')
 AdaptArena <- function(reactor_id,GeometricMatrix,MenuLocation,arena){
   CellVolume <- GeometricMatrix[1,reactor_id] 
-  Hydraulic_retention_time <- GeometricMatrix[2,reactor_id] 
   MaxBiomass <- GeometricMatrix[3,reactor_id] 
-  steps <- GeometricMatrix[4,reactor_id] 
   dt <- GeometricMatrix[5,reactor_id] 
   Width <- GeometricMatrix[6,reactor_id] 
   arena@tstep <- dt 
@@ -19,5 +17,6 @@ AdaptArena <- function(reactor_id,GeometricMatrix,MenuLocation,arena){
   for (s in 1:SpecsNumbers){
     arena@specs[[s]]@maxweight <- MaxBiomass 
   }
+  return(arena)
 }
 

@@ -18,7 +18,7 @@ Geometry <- function(Parameters){
     CellLengt <- dt*Speed
     width <- Width/GridSize
     CellArea <- width**2
-    CellVolume <- CellArea*CellLengt*1e12 #um3 #to define the ammount of metabolite in each cell
+    CellVolume <- CellArea*CellLengt*1e12 #umTot3 #to define the amount of metabolite in each cell
     MaxMicrobesNumber <- CellVolume/MicrobeVolume
     MaxBiomass <- MaxMicrobesNumber*MicrobeMass
     GeometricMatrix[1,reactor_id] <- CellVolume
