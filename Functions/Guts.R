@@ -30,7 +30,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   for (reactor_id in 1:4) {
     print(reactor_id)
     ParametersGeometry <- Geometry(reactor_id,Parameters)
-    Width <- ParametersGeometry[2]
+    Width <- ParametersGeometry[2] #cm
     GridSize <- ParametersGeometry[1]
     steps <- ParametersGeometry[3]
     Length <- ParametersGeometry[4] #cm
@@ -39,11 +39,20 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
     Hydraulic_retention_time <- Length/Speed #h
     dt <- Hydraulic_retention_time/steps
     CellLengt <- dt*Speed
-    width <- Width/GridSize
-    CellArea <- width**2
+    width <- Width/GridSize #cm
+    CellArea <- width**2 #cm2
     CellVolume <- CellArea*CellLengt*1e12 #um3
     MaxMicrobesNumber <- CellVolume/MicrobeVolume
     MaxBiomass <- MaxMicrobesNumber*MicrobeMass
+    if (reactor_id==1){
+      arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
+      arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
+      arena <- Menu(MenuLocation,arena,CellVolume)
+      eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
+      CellVolumeVec <- CellVolume
+      CellVolume0 <- CellVolume
+      steps <-steps-1
+    }    
     for (s in 1:steps){
       ReactorSpaceLocation <- c(ReactorSpaceLocation,Reactors[reactor_id])
       StepsLocation <- c(StepsLocation,length(ReactorSpaceLocation))
@@ -51,14 +60,9 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
       Zposprogress <- Zposprogress + dt*Speed
       HRT <- c(HRT,HRTprogress)
       ZPosition <- c(ZPosition,Zposprogress)
+      CellVolumeVec <- c(CellVolumeVec,CellVolume)
     }
-    if (reactor_id==1){
-      arena <- BacArena::Arena(n=GridSize,m=GridSize,Lx=Width,Ly=Width,tstep=dt) #Define the 2D space geometry
-      arena <- Inoculation(ModelCommunityLocation,ModelsFolder,arena) #Add the microorganisms to the arena
-      arena <- Menu(MenuLocation,arena,CellVolume)
-      eval <- BacArena::simEnv(arena,time=1) #, sec_obj='mtf'
-      steps <-steps-1
-    }
+
     #return(eval)
     eval@tstep <- dt
     eval@n <- GridSize
@@ -76,7 +80,7 @@ Guts <- function(home,Parameters_folder='Parameters',Models_folder='MicroModel',
   }
   SpaceLocationInf <- data.frame('TimeSteps'=StepsLocation ,'Guts section'=ReactorSpaceLocation,'Longitudinal progress (cm)'= ZPosition, 'HRT (h)' = HRT)
   if(SaveResults){
-    SaveProfiles(eval,SpaceLocationInf,CellVolume,GridSize,MicrobeMass)
+    SaveProfiles(eval,SpaceLocationInf,CellVolume0,GridSize,MicrobeMass,CellVolumeVec)
   }
   return(eval)
 }
