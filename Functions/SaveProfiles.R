@@ -11,7 +11,7 @@ SaveProfiles <- function(eval,SpaceLocationInf,CellVolume,GridSize,MicrobeMass,C
   Biomass_DF <- merge(SpaceLocationInf,Biomass_DF, by = 'TimeSteps')
   BiomassProfileLocation <- paste(CurrentResult,'/Biomass(cells_uL).xlsx',sep='')
   write_xlsx(Biomass_DF,BiomassProfileLocation)
-  Concentrations_DF <- RetrieveComposition(eval,CellVolume,CellVolumeVec)
+  Concentrations_DF <- RetrieveComposition(eval,GridSize,CellVolume,CellVolumeVec)
   Concentrations_DF <- merge(SpaceLocationInf,Concentrations_DF, by = 'TimeSteps')
   ConcentrationProfileLocation <- paste(CurrentResult,'/Metabolites(mM).xlsx',sep='')
   write_xlsx(Concentrations_DF,ConcentrationProfileLocation)  

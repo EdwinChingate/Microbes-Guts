@@ -9,7 +9,7 @@ RetrieveBiomass <-function(eval,CellVolume,GridSize,MicrobeMass,CellVolumeVec){
   }
   for (moment in 1:Tsteps){
     StepBiomass <- eval@simlist[[moment]]
-    CellVolume <- CellVolumeVec[moment]/100
+    CellVolume <- CellVolumeVec[moment]
     for (Mspec in 1:NSpecs){
       biomass <- sum(StepBiomass['biomass'][StepBiomass['type']==Mspec])/(CellVolume*Ncells)*1e12 #Biomass concentration pg/mL
       Biomass_matrix[moment,Mspec] <- biomass/MicrobeMass #Biomass concentration cells/mL
