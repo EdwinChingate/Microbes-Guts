@@ -19,3 +19,5 @@ RetrieveBiomass <-function(eval,CellVolume,GridSize,MicrobeMass){
   Biomass_DF$TimeSteps <- 1:Tsteps
   return(Biomass_DF)
 }
+
+#I think current biomass is stored arena@orgdat inside the arena object
